@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         date_bt.setOnClickListener(this);
         time_bt.setOnClickListener(this);
+        save_bt.setOnClickListener(this);
     }
 
 
