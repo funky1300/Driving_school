@@ -5,9 +5,12 @@ import android.app.TimePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import androidx.activity.EdgeToEdge;
@@ -17,12 +20,18 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     EditText name, phone_number, email;
     Button date_bt, time_bt, save_bt;
+    public ArrayAdapter<String> adapter;
+    public ListView lv;
+    public ArrayList<Serializable> arr;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +54,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         date_bt.setOnClickListener(this);
         time_bt.setOnClickListener(this);
         save_bt.setOnClickListener(this);
+
+        this.lv = findViewById(R.id.lv);
+        this.arr = new ArrayList<>();
+
     }
 
 
@@ -88,6 +101,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             builder.setView(et);
 
             builder.create().show();
+
+            this.arr.add(lesson);
+
+            String[] lessons = new String[this.arr.size()];
+            for (int i = 0; i < this.arr.size(); i++) {
+                driving_lesson temp_lesson = (driving_lesson) this.arr.get(i);
+                lessons[i] = temp_lesson.toString();
+            }
+
+            // this.lv is already initialized in onCreate
+            this.adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lessons);
+            this.lv.setAdapter(this.adapter);
+
+            // The following lines seem to reference non-existent variables (total_price, items, total_price_text)
+            // and have been removed. If you have these views and logic, you'll need to re-implement them correctly.
+            /*
+             this.total_price = (TextView) findViewById(R.id.total_price);
+             this.items = (TextView) findViewById(R.id.items);
+             this.items.setText("" + this.arr.size());
+             this.total_price.setText("" + total_price_text);
+             */
         }
 
     }
