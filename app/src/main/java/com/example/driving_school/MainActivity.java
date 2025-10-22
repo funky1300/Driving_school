@@ -2,6 +2,7 @@ package com.example.driving_school;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -93,7 +94,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage(lesson.toString());
             builder.setTitle("lesson");
-            builder.setPositiveButton("ok", null);
+            builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // This code will run when the "ok" button is pressed.
+                    arr.add(lesson);
+
+                    String[] lessons = new String[arr.size()];
+                    for (int i = 0; i < arr.size(); i++) {
+                        driving_lesson temp_lesson = (driving_lesson) arr.get(i);
+                        lessons[i] = temp_lesson.toString();
+                    }
+
+                    adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, lessons);
+                    lv.setAdapter(adapter);
+                }
+            });
             builder.setNegativeButton("cancel", null);
             EditText et = new EditText(this);
             et.setText(lesson.toString());
@@ -101,27 +117,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             builder.setView(et);
 
             builder.create().show();
-
-            this.arr.add(lesson);
-
-            String[] lessons = new String[this.arr.size()];
-            for (int i = 0; i < this.arr.size(); i++) {
-                driving_lesson temp_lesson = (driving_lesson) this.arr.get(i);
-                lessons[i] = temp_lesson.toString();
-            }
-
-            // this.lv is already initialized in onCreate
-            this.adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, lessons);
-            this.lv.setAdapter(this.adapter);
-
-            // The following lines seem to reference non-existent variables (total_price, items, total_price_text)
-            // and have been removed. If you have these views and logic, you'll need to re-implement them correctly.
-            /*
-             this.total_price = (TextView) findViewById(R.id.total_price);
-             this.items = (TextView) findViewById(R.id.items);
-             this.items.setText("" + this.arr.size());
-             this.total_price.setText("" + total_price_text);
-             */
         }
 
     }
